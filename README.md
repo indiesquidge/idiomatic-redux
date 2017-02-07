@@ -43,3 +43,23 @@ This is a pervasive pattern in Redux development, and can be applied many times,
 and while there is still a single top-level *reducer* managing the state of the
 application, it is convenient to express it as many *reducers* calling each
 other, each contributing to a part of the *state* tree.
+
+This pattern is so common that Redux exports a `combineReducers` function who's
+signature will take a single object argument—which is a mapping between the
+*state* field names and the *reducers* managing them—and will return the top
+level *reducer* function.
+
+> It is a useful convention to always name your *reducers* after the *state*
+> keys they manage.
+
+Reducer Composition helps scale Redux development because different people on
+the team can work on different *reducers*, handling the same actions, without
+running into each other and causing merge conflicts.
+
+### Useful Conventions
+
+- If a *reducer* receives an unknown *action*, it should return the current *state*.
+- If a *reducer* receives an undefined *state*, it should return the current *state*.
+- Name your *reducers* after the *state* keys they manage.
+- All *reducers* should take in two arguments: the current state, and an action,
+    even if the *reducer* does not make use of the *state* passed in.
