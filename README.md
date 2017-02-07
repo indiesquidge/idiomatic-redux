@@ -56,6 +56,26 @@ Reducer Composition helps scale Redux development because different people on
 the team can work on different *reducers*, handling the same actions, without
 running into each other and causing merge conflicts.
 
+### Redux Store
+
+The *store* has three important methods:
+
+1. `getState()` - retrieves current *state* of the Redux *store*
+
+2. `dispatch(action: Object)` - let's you call actions to change the *state*
+
+3. `subscribe(callback: Function)` - let's you register a callback that the *store*
+will call anytime an *action* has been dispatched, allowing you to update your
+UI to reflect the current application state
+
+Any *state* change is caused by a `store.dispatch()` call somewhere in a React
+component. When an *action* is dispatched, the *store* calls the *reducer* it
+was created with, passing the current *state* and the *action* being dispatched.
+
+If subscribed to the *store*, the ReactDOM `render` function is called anytime
+the *store* state changes, so passing the current state of the *store* as a prop
+(with `store.getState()`) is safe and will keep the UI up-to-date with the state.
+
 ### Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
