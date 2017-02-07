@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux'
+
 const todo = (state, action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -15,6 +17,8 @@ const todo = (state, action) => {
         ...state,
         completed: !state.completed
       }
+    default:
+      return state
   }
 }
 
@@ -38,15 +42,6 @@ const visibilityFilter = (state = 'SHOW_ALL', action) => {
       return action.filter
     default:
       return state
-  }
-}
-
-const combineReducers = (reducers) => {
-  return (state, action) => {
-    return Object.keys(reducers).reduce((nextState, key) => {
-      nextState[key] = reducers[key](state[key], action)
-      return nextState
-    }, {})
   }
 }
 

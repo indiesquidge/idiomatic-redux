@@ -1,4 +1,4 @@
-import todoApp from './App'
+import todoApp from './reducers'
 
 describe('todos reducer', () => {
   it('can add a todo', () => {
