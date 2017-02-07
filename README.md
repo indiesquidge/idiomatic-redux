@@ -38,3 +38,8 @@ different parts of the *state* tree are updated in response to *acitons*.
 *Reducers* are normal JavaScript functions, so they can call other *reducers*
 to delegate and abstract away handling of updates of some parts of the *state*
 they manage. The updates are then combined into one larger state object.
+
+This is a pervasive pattern in Redux development, and can be applied many times,
+and while there is still a single top-level *reducer* managing the state of the
+application, it is convenient to express it as many *reducers* calling each
+other, each contributing to a part of the *state* tree.
