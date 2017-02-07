@@ -41,7 +41,14 @@ const visibilityFilter = (state = 'SHOW_ALL', action) => {
   }
 }
 
-import { combineReducers } from 'redux'
+const combineReducers = (reducers) => {
+  return (state, action) => {
+    return Object.keys(reducers).reduce((nextState, key) => {
+      nextState[key] = reducers[key](state[key], action)
+      return nextState
+    }, {})
+  }
+}
 
 const todoApp = combineReducers({
   todos,
