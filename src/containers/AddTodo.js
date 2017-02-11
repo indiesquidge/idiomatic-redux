@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 /*
  * This cannot currently be classified as a presentation or container comonent.
@@ -11,13 +12,13 @@ import React from 'react'
 */
 
 let nextTodoId = 0
-const AddTodo = (props, { store }) => {
+let AddTodo = ({ dispatch }) => {
   let input
   return (
     <div>
       <input type='text' ref={node => { input = node }} />
       <button onClick={() => {
-        store.dispatch({
+        dispatch({
           type: 'ADD_TODO',
           id: nextTodoId++,
           text: input.value
@@ -30,8 +31,6 @@ const AddTodo = (props, { store }) => {
   )
 }
 
-AddTodo.contextTypes = {
-  store: React.PropTypes.object
-}
+AddTodo = connect()(AddTodo)
 
 export default AddTodo
