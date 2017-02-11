@@ -6,6 +6,7 @@ import { createStore } from 'redux'
 
 import TodoList from './components/TodoList'
 import AddTodo from './components/AddTodo'
+import Footer from './components/Footer'
 
 const store = createStore(todoApp)
 
@@ -20,26 +21,6 @@ const getVisibleTodos = (todos, filter) => {
     default:
       return todos
   }
-}
-
-const FilterLink = ({
-  filter,
-  currentFilter,
-  children
-}) => {
-  return filter === currentFilter ? (
-    <span>{children}</span>
-  ) : (
-    <a href='#' onClick={e => {
-      e.preventDefault()
-      store.dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter
-      })
-    }}>
-      {children}
-    </a>
-  )
 }
 
 let nextTodoId = 0
@@ -67,21 +48,15 @@ class TodoApp extends Component {
             })
           }
         />
-        <p>
-          Show:
-          {' '}
-          <FilterLink filter='SHOW_ALL' currentFilter={visibilityFilter}>
-            All
-          </FilterLink>
-          {' '}
-          <FilterLink filter='SHOW_ACTIVE' currentFilter={visibilityFilter}>
-            Active
-          </FilterLink>
-          {' '}
-          <FilterLink filter='SHOW_COMPLETED' currentFilter={visibilityFilter}>
-            Completed
-          </FilterLink>
-        </p>
+        <Footer
+          visibilityFilter={visibilityFilter}
+          onFilterClick={filter =>
+            store.dispatch({
+              type: 'SET_VISIBILITY_FILTER',
+              filter
+            })
+          }
+        />
       </div>
     )
   }
