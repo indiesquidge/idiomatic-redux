@@ -126,3 +126,56 @@ solved by introducing many intermediate container components.
 Separating the container and presentation components is often a good idea, but
 it should not be taken as a dogma. It should only be done when it truly reduces
 the complexity of the codebase.
+
+### React-Redux: React bindings for Redux
+
+**Provider**: Component
+
+Uses React's `context` to expose the store passed to it as a prop so that
+container components can specify their `contextTypes` and use `this.context.store`
+to subscribe to store updates and dispatch actions.
+
+React `context` can be used to pass data through the component tree without
+having to pass down props manually at every level. It creates a sort of wormhole
+between the context provider component and the children/grandchildren components
+who would like to opt-in to use `context`.
+
+This is a pattern that should not be taken lightly, as it contradicts the React
+philosophy of explicit date flow by essentially providing global variables across
+the component tree. However, when used sparingly for dependency injection (like
+passing the Redux store down through the component tree), it can be useful.
+
+**connect**: (curried) function
+
+All container components are very similar. They need to:
+
+- re-render when the store state changes
+- unsubscribe from the store when they unmount
+- take the current state of the store and use it to render the presentation
+    components with some props they calculate from the state of the store
+- specify the `contextTypes` to get the store from the context
+
+`connect` is a utility function that encapsulates and provides these
+requirements by mapping the store state and desired actions to props. It is a
+curried function call, and the second call argument is the presentation component
+that is desired to be connected to the Redux store. The result of the `connect`
+call is a new container component that will render the presentation component
+passed in. It will calculate the props to pass to the presentation component by
+merging the return object from `mapStateToProps`, `mapDispatchToProps`, and any
+props explicitly provided on the container component itself.
+
+```javascript
+const ContainerComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PresentationComponent)
+```
+
+It's a common pattern to inject just the `dispatch` function when creating
+container components, and not subscribe to the store. If `mapStateToProps`
+or `mapDispatchToProps` is 'falsy', `connect` will still give you `dispatch` as
+a prop.
+
+It's also a common pattern to use the container props when calculating the child
+props for the presentation component. This is why  both `mapStateToProps` and
+`mapDispatchToProps` can take props as an optional second argument.
