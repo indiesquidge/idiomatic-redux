@@ -1,14 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import todoApp from './store/Todos/reducers'
-import { createStore } from 'redux'
+import store from './store/index'
 
 import TodoList from './components/TodoList'
 import AddTodo from './components/AddTodo'
 import Footer from './components/Footer'
-
-const store = createStore(todoApp)
 
 const getVisibleTodos = (todos, filter) => {
   switch (filter) {
