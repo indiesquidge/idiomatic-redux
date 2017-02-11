@@ -4,7 +4,7 @@ import Link from '../components/Link'
 
 export default class FilterLink extends Component {
   componentDidMount () {
-    const { store } = this.props
+    const { store } = this.context
     this.unsubscribe = store.subscribe(() =>
       this.forceUpdate()
     )
@@ -16,7 +16,7 @@ export default class FilterLink extends Component {
 
   render () {
     const props = this.props
-    const { store } = this.props
+    const { store } = this.context
     const state = store.getState()
 
     return (
@@ -33,4 +33,8 @@ export default class FilterLink extends Component {
       </Link>
     )
   }
+}
+
+FilterLink.contextTypes = {
+  store: React.PropTypes.object
 }
