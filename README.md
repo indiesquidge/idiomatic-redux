@@ -83,3 +83,46 @@ the *store* state changes, so passing the current state of the *store* as a prop
 - Name your *reducers* after the *state* keys they manage.
 - All *reducers* should take in two arguments: the current state, and an action,
     even if the *reducer* does not make use of the *state* passed in.
+- Prefer to keep the data that a UI component needs for rendering explicit (e.g.
+    instead of passing a `todo` object to a `<Todo />` component, pass the `todo`
+    object properties as separate props)
+- First try and extract presentation components. If there is too much boilerplate
+    passing the props to them through intermediate components, create container
+    components around the presentation components, load the data, and specify the
+    behavior.
+
+### Recommended Patterns
+
+*Container Components* - React components concerned with connecting the Redux
+store to the presentation components and specify the data and behavior that it
+needs
+
+*Presentation Components* - React components only concerned with how things look
+or how they render
+
+### Recommended Component Architecture:
+
+Components do not need to know *how* a change will take place, all they know is
+that they need to dispatch an *action* with at least a *type* property. (This
+makes *actions* follow a declarative programming approach.)
+
+The UI is most predictable when it is described as a pure function of the
+application state. A goal of refactoring components is to make every component
+as flexible as it is reasonable.
+
+Separate components into categories that are based on how things look
+(presentation components), and how they *act* (container components) so that
+components can be as flexible as possible. This decouples your rendering from
+Redux, so if you later decided to move your project to another framework (e.g.
+Relay, MobX, etc.) you won't have to change all of your components, as you can
+keep the presentational components exactly the same.
+
+The downside of the approach is that it somewhat breaks the encapsulation
+principle: you have to thread a lot of props through the components to get them
+to the leaf presentation components, including the callbacks, even when the
+intermediate components don't really use them. However, this problem can be
+solved by introducing many intermediate container components.
+
+Separating the container and presentation components is often a good idea, but
+it should not be taken as a dogma. It should only be done when it truly reduces
+the complexity of the codebase.
