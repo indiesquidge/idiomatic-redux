@@ -5,6 +5,7 @@ import todoApp from './store/Todos/reducers'
 import { createStore } from 'redux'
 
 import TodoList from './components/TodoList'
+import AddTodo from './components/AddTodo'
 
 const store = createStore(todoApp)
 
@@ -50,19 +51,13 @@ class TodoApp extends Component {
 
     return (
       <div>
-        <input type='text' ref={node => {
-          this.input = node
-        }} />
-        <button onClick={() => {
+        <AddTodo onAddClick={text => {
           store.dispatch({
             type: 'ADD_TODO',
-            text: this.input.value,
-            id: nextTodoId++
+            id: nextTodoId++,
+            text
           })
-          this.input.value = ''
-        }}>
-          Add Todo
-        </button>
+        }} />
         <TodoList
           todos={visibleTodos}
           onTodoClick={id =>
