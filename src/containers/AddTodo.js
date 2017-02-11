@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { addTodo } from '../store/Todos/actions'
+
 /*
  * This cannot currently be classified as a presentation or container comonent.
  * The input and the button the presentation part, but dispatching an action on
@@ -11,18 +13,13 @@ import { connect } from 'react-redux'
  * behavior other than the dispatch on click.
 */
 
-let nextTodoId = 0
 let AddTodo = ({ dispatch }) => {
   let input
   return (
     <div>
       <input type='text' ref={node => { input = node }} />
       <button onClick={() => {
-        dispatch({
-          type: 'ADD_TODO',
-          id: nextTodoId++,
-          text: input.value
-        })
+        dispatch(addTodo(input.value))
         input.value = ''
       }}>
         Add Todo
