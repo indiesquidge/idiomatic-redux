@@ -1,21 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
 
-import store from './store/index'
+import todoApp from './store/Todos/reducers'
 
 import VisibleTodoList from './containers/VisibleTodoList'
 import AddTodo from './containers/AddTodo'
 import Footer from './components/Footer'
 
-const TodoApp = () => (
+const TodoApp = ({ store }) => (
   <div>
-    <AddTodo />
-    <VisibleTodoList />
-    <Footer />
+    <AddTodo store={store} />
+    <VisibleTodoList store={store} />
+    <Footer store={store} />
   </div>
 )
 
 ReactDOM.render(
-  <TodoApp />,
+  <TodoApp store={createStore(todoApp)} />,
   document.getElementById('root')
 )

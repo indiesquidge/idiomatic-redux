@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 
-import store from '../store/index'
-
 import Link from '../components/Link'
 
 export default class FilterLink extends Component {
   componentDidMount () {
+    const { store } = this.props
     this.unsubscribe = store.subscribe(() =>
       this.forceUpdate()
     )
@@ -17,6 +16,7 @@ export default class FilterLink extends Component {
 
   render () {
     const props = this.props
+    const { store } = this.props
     const state = store.getState()
 
     return (

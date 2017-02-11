@@ -1,7 +1,5 @@
 import React from 'react'
 
-import store from '../store/index'
-
 /*
  * This cannot currently be classified as a presentation or container comonent.
  * The input and the button the presentation part, but dispatching an action on
@@ -13,7 +11,7 @@ import store from '../store/index'
 */
 
 let nextTodoId = 0
-const AddTodo = () => {
+const AddTodo = ({ store }) => {
   let input
   return (
     <div>
