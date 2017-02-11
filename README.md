@@ -100,6 +100,12 @@ needs
 *Presentation Components* - React components only concerned with how things look
 or how they render
 
+*Action Creators* - takes arguments about the action and returns an action
+object with the type and necessary properties set. While actions objects could
+be dispatched inline, using abstracted functions to encapsulate the action types
+helps document what kinds of actions can be dispatched without worrying about
+the action's internal structure.
+
 ### Recommended Component Architecture:
 
 Components do not need to know *how* a change will take place, all they know is
