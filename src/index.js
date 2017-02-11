@@ -3,7 +3,31 @@ import ReactDOM from 'react-dom'
 
 import todoApp from './store/Todos/reducers'
 
-import { createStore } from 'redux'
+const createStore = (rootReducer) => {
+  let state
+  let listeners = []
+
+  const getState = () => state
+
+  const dispatch = (action) => {
+    state = rootReducer(state, action)
+    listeners.forEach(listener => listener())
+  }
+
+  const subscribe = (listener) => {
+    listeners.push(listener)
+    // unsubscribe return function
+    return () => {
+      listeners.filter(l => l !== listener)
+    }
+  }
+
+  // dummy action to get reducer to return initial state
+  dispatch({})
+
+  return { getState, dispatch, subscribe }
+}
+
 const store = createStore(todoApp)
 
 const getVisibleTodos = (todos, filter) => {
