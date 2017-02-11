@@ -5,6 +5,16 @@ import store from '../store/index'
 import Link from '../components/Link'
 
 export default class FilterLink extends Component {
+  componentDidMount () {
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount () {
+    this.unsubscribe()
+  }
+
   render () {
     const props = this.props
     const state = store.getState()
