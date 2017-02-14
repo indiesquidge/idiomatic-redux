@@ -76,6 +76,12 @@ If subscribed to the *store*, the ReactDOM `render` function is called anytime
 the *store* state changes, so passing the current state of the *store* as a prop
 (with `store.getState()`) is safe and will keep the UI up-to-date with the state.
 
+Upon initial creation, Redux will let you pass some persisted or initial state
+as the second argument to `createStore()`. This will override the initial state
+values specified by the *reducers*. Essentially, whatever you pass pass to
+`createStore` as the second argument will end up in the root *reducer* as the
+*state* argument, instead of `undefined`.
+
 ### Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
