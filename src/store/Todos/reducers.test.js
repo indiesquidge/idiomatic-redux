@@ -13,8 +13,7 @@ describe('todos reducer', () => {
         id: 0,
         text: 'Learn Redux',
         completed: false
-      }],
-      visibilityFilter: 'SHOW_ALL'
+      }]
     }
     expect(todoApp(stateBefore, action)).toEqual(stateAfter)
   })
@@ -32,8 +31,7 @@ describe('todos reducer', () => {
           text: 'Learn React',
           completed: false
         }
-      ],
-      visibilityFilter: 'SHOW_ALL'
+      ]
     }
     const action = {
       type: 'TOGGLE_TODO',
@@ -51,25 +49,7 @@ describe('todos reducer', () => {
           text: 'Learn React',
           completed: true
         }
-      ],
-      visibilityFilter: 'SHOW_ALL'
-    }
-
-    expect(todoApp(stateBefore, action)).toEqual(stateAfter)
-  })
-
-  it('can set a visibility filter on a todo', () => {
-    const stateBefore = {
-      todos: [],
-      visibilityFilter: 'SHOW_ALL'
-    }
-    const action = {
-      type: 'SET_VISIBILITY_FILTER',
-      filter: 'SHOW_COMPLETED'
-    }
-    const stateAfter = {
-      todos: [],
-      visibilityFilter: 'SHOW_COMPLETED'
+      ]
     }
 
     expect(todoApp(stateBefore, action)).toEqual(stateAfter)
