@@ -191,3 +191,15 @@ a prop.
 It's also a common pattern to use the container props when calculating the child
 props for the presentation component. This is why  both `mapStateToProps` and
 `mapDispatchToProps` can take props as an optional second argument.
+
+### React-Router: declarative routing for React apps
+
+**withRouter**: higher-order Component
+
+Takes a React component as input, and returns a new React component injected
+with router related props (e.g. `match`). This function will also pass any props
+through itself, so any props passed by the app will be available on the returned
+component. Handy when you need to read the current params somewhere deep in the
+component tree. `withRouter` will re-render the component every time the route
+changes. (Note that `withRouter` can only work with the `connect` function if
+using `react-router` version 3+.)
