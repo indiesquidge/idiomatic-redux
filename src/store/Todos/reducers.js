@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux'
 
+import * as fromTodos from './selectors'
+
+export const getVisibleTodos = (state, filter) =>
+  fromTodos.getVisibleTodos(state.todos, filter)
+
 const todo = (state, action) => {
   switch (action.type) {
     case 'ADD_TODO':
