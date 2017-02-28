@@ -96,6 +96,8 @@ values specified by the *reducers*. Essentially, whatever you pass pass to
     passing the props to them through intermediate components, create container
     components around the presentation components, load the data, and specify the
     behavior.
+- The *reducer* function should be the default export of a reducer file, but any
+    *selector* functions should be named exports.
 
 ### Recommended Patterns
 
@@ -111,6 +113,11 @@ object with the type and necessary properties set. While actions objects could
 be dispatched inline, using abstracted functions to encapsulate the action types
 helps document what kinds of actions can be dispatched without worrying about
 the action's internal structure.
+
+*Selectors* - functions (usually prefixed with `get`) used to encapsulate the
+knowledge about the *state* shape so that the components don't have to rely on
+it; so named because they "select" something from the state and use it to
+prepare data to be displayed by the UI.
 
 ### Recommended Component Architecture:
 
