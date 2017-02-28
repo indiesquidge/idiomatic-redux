@@ -2,8 +2,12 @@ import { combineReducers } from 'redux'
 
 import * as fromTodos from './selectors'
 
-export const getVisibleTodos = (state, filter) =>
-  fromTodos.getVisibleTodos(state.todos, filter)
+const getAllTodos = (state) => state.allIds.map(id => state.byId[id])
+
+export const getVisibleTodos = (state, filter) => {
+  const allTodos = getAllTodos(state)
+  return fromTodos.getVisibleTodos(allTodos, filter)
+}
 
 const todo = (state, action) => {
   switch (action.type) {
@@ -27,22 +31,34 @@ const todo = (state, action) => {
   }
 }
 
-const todos = (state = [], action) => {
+const byId = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [
-        ...state,
-        todo(undefined, action)
-      ]
     case 'TOGGLE_TODO':
-      return state.map(t => todo(t, action))
+      return {
+        ...state,
+        [action.id]: todo(state[action.id], action)
+      }
     default:
       return state
   }
 }
 
-const todoApp = combineReducers({
-  todos
+const allIds = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [
+        ...state,
+        action.id
+      ]
+    default:
+      return state
+  }
+}
+
+const todos = combineReducers({
+  allIds,
+  byId
 })
 
-export default todoApp
+export default todos
