@@ -82,6 +82,21 @@ values specified by the *reducers*. Essentially, whatever you pass pass to
 `createStore` as the second argument will end up in the root *reducer* as the
 *state* argument, instead of `undefined`.
 
+You can also pass in an "enhancer" argument as the final argument to `createStore()`.
+Most of the time, Redux's `applyMiddleware` function is passed in as the
+"enhancer". If you want to include some persisted state, you need to do this
+before the enhancer, but you can skip the persisted state if you don't have it.
+
+### Redux Middleware
+
+The purpose of Redux middlewares is to replace the single `dispatch()` function
+with a chain of composable dispatch functions which each can do something with
+an *action*. Middleware is a powerful system that lets us put custom behavior on
+*actions* before they reach the *reducers*. This can be useful for logging,
+analytics, error handling, asynchronous control flow, and more. Adding
+middleware is supported out of the box with Redux through the `applyMiddleware`
+named export.
+
 ### Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
