@@ -97,6 +97,24 @@ analytics, error handling, asynchronous control flow, and more. Adding
 middleware is supported out of the box with Redux through the `applyMiddleware`
 named export.
 
+All Redux middlewares have the same function signature, accepting the *store*,
+the next dispatch function, and the *action* as curried arguments
+
+```javascript
+const someMiddleware = (store) => (next) => (action) => newDispatchFunction
+```
+
+The most common way to write asynchronous *action creators* is to use something
+called "thunks", which are *action creators* who's return value is a function.
+Usually this function takes dispatch as it's argument so that it can dispatch
+multiple times throughout an async operation.
+
+"Thunk middleware" is a powerful composable way to express async *action
+creators* that want to emit several actions during the course of an async
+operation. This is useful when you want to let a component specify the intention
+to start an async operation without worrying which actions get dispatched and
+when.
+
 ### Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
