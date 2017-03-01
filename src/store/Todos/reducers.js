@@ -13,50 +13,28 @@ const byId = (state = {}, action) => {
   }
 }
 
-const allIds = (state = [], action) => {
-  if (action.filter !== 'all') {
-    return state
-  }
-  switch (action.type) {
-    case 'RECEIVE_TODOS':
-      return action.response.map(todo => todo.id)
-    default:
+const createList = (filter) => {
+  return (state = [], action) => {
+    if (action.filter !== filter) {
       return state
+    }
+    switch (action.type) {
+      case 'RECEIVE_TODOS':
+        return action.response.map(todo => todo.id)
+      default:
+        return state
+    }
   }
 }
 
-const activeIds = (state = [], action) => {
-  if (action.filter !== 'active') {
-    return state
-  }
-  switch (action.type) {
-    case 'RECEIVE_TODOS':
-      return action.response.map(todo => todo.id)
-    default:
-      return state
-  }
-}
-
-const completedIds = (state = [], action) => {
-  if (action.filter !== 'completed') {
-    return state
-  }
-  switch (action.type) {
-    case 'RECEIVE_TODOS':
-      return action.response.map(todo => todo.id)
-    default:
-      return state
-  }
-}
-
-const idsByFilter = combineReducers({
-  all: allIds,
-  active: activeIds,
-  completed: completedIds
+const listByFilter = combineReducers({
+  all: createList('all'),
+  active: createList('active'),
+  completed: createList('completed')
 })
 
 const todos = combineReducers({
-  idsByFilter,
+  listByFilter,
   byId
 })
 
