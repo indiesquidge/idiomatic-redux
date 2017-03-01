@@ -38,4 +38,8 @@ const todos = combineReducers({
   byId
 })
 
+export const getTodo = (state, id) => state[id]
+export const getIds = (state) => state.ids
+export const getIsFetching = (state) => state.isFetching
+
 export default todos

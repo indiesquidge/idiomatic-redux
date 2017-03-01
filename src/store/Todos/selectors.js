@@ -1,6 +1,4 @@
-export const getTodo = (state, id) => state[id]
-
-export const getIds = (state) => state
+import * as fromTodos from './reducers'
 
 export const getVisibleTodos = (state, filter) => {
   const ids = getIds(state.listByFilter[filter])
