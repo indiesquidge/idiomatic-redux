@@ -158,6 +158,13 @@ change the *state* that is stored by *reducers* without having to change your
 components or your tests (if you use *selectors* and *reducers* together in your
 tests).
 
+When handling promise errors, it is usually best practice to use `catch` in the
+promise chain. The downside of this approach is if one of your reducers or
+subscribe components throws while handling an action, you'll get into the
+`catch` block and display an internal error message to the user. To avoid this,
+it is recommended that you don't use `catch` in this scenario and just pass the
+second argument so it catches only the errors from the underlying API promise.
+
 ### Recommended Component Architecture:
 
 Components do not need to know *how* a change will take place, all they know is
