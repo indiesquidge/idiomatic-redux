@@ -134,6 +134,12 @@ knowledge about the *state* shape so that the components don't have to rely on
 it; so named because they "select" something from the state and use it to
 prepare data to be displayed by the UI.
 
+Redux does not enforce that you encapsulate the knowledge about the state shape
+in particular *selectors*. However, it's a nice pattern because it lets you
+change the *state* that is stored by *reducers* without having to change your
+components or your tests (if you use *selectors* and *reducers* together in your
+tests).
+
 ### Recommended Component Architecture:
 
 Components do not need to know *how* a change will take place, all they know is
