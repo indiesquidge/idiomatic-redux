@@ -33,6 +33,13 @@ export const addTodo = (text) =>
     return todo
   })
 
+export const toggleTodo = (id) =>
+  delay(500).then(() => {
+    const todo = fakeDatabase.todos.find(todo => todo.id === id)
+    todo.completed = !todo.completed
+    return todo
+  })
+
 export const fetchTodos = (filter) => {
   return delay(500).then(() => {
     if (Math.random() > 0.5) {

@@ -9,6 +9,7 @@ const byId = (state = {}, action) => {
       })
       return nextState
     case 'ADD_TODO_SUCCESS':
+    case 'TOGGLE_TODO_SUCCESS':
       return {
         ...state,
         [action.response.id]: action.response
@@ -19,12 +20,26 @@ const byId = (state = {}, action) => {
 }
 
 const createList = (filter) => {
+  const handleToggle = (state, action) => {
+    const { completed } = action.response
+    const shouldRemove = (
+      (completed && filter === 'active') ||
+      (!completed && filter === 'completed')
+    )
+
+    return shouldRemove
+      ? state.filter(id => id !== action.response.id)
+      : state
+  }
+
   const ids = (state = [], action) => {
     switch (action.type) {
       case 'FETCH_TODOS_SUCCESS':
         return (filter === action.filter)
           ? action.response.map(todo => todo.id)
           : state
+      case 'TOGGLE_TODO_SUCCESS':
+        return handleToggle(state, action)
       case 'ADD_TODO_SUCCESS':
         return (filter !== 'completed')
           ? [...state, action.response.id]
