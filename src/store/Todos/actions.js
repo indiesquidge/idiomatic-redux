@@ -1,3 +1,6 @@
+import { normalize } from 'normalizr'
+
+import * as schema from '../schema'
 import { getIsFetching } from './selectors'
 import * as api from '../../api'
 
@@ -11,12 +14,11 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
     filter
   })
 
-  return api.fetchTodos(filter)
-    .then(
+  return api.fetchTodos(filter).then(
       response => dispatch({
         type: 'FETCH_TODOS_SUCCESS',
         filter,
-        response
+        response: normalize(response, schema.todoListSchema)
       }),
       error => dispatch({
         type: 'FETCH_TODOS_FAILURE',
@@ -30,7 +32,7 @@ export const addTodo = (text) => (dispatch) =>
   api.addTodo(text).then(response => {
     dispatch({
       type: 'ADD_TODO_SUCCESS',
-      response
+      response: normalize(response, schema.todoSchema)
     })
   })
 
@@ -38,6 +40,6 @@ export const toggleTodo = (id) => (dispatch) =>
   api.toggleTodo(id).then(response => {
     dispatch({
       type: 'TOGGLE_TODO_SUCCESS',
-      response
+      response: normalize(response, schema.todoSchema)
     })
   })
