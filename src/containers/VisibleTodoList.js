@@ -38,7 +38,7 @@ let VisibleTodoList = class VisibleTodoList extends Component {
       return (
         <FetchError
           message={errorMessage}
-          onRetry={() => this.fetchData()}
+          onRetry={this.fetchData}
         />
       )
     }

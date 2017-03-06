@@ -2,9 +2,8 @@ import { normalize } from 'normalizr'
 
 import * as schema from '../schema'
 import { getIsFetching } from './selectors'
-import * as api from '../../api'
 
-export const fetchTodos = (filter) => (dispatch, getState) => {
+export const fetchTodos = (filter) => (dispatch, getState, api) => {
   if (getIsFetching(getState(), filter)) {
     return Promise.resolve()
   }
@@ -28,7 +27,7 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
     )
 }
 
-export const addTodo = (text) => (dispatch) =>
+export const addTodo = (text) => (dispatch, getState, api) =>
   api.addTodo(text).then(response => {
     dispatch({
       type: 'ADD_TODO_SUCCESS',
@@ -36,7 +35,7 @@ export const addTodo = (text) => (dispatch) =>
     })
   })
 
-export const toggleTodo = (id) => (dispatch) =>
+export const toggleTodo = (id) => (dispatch, getState, api) =>
   api.toggleTodo(id).then(response => {
     dispatch({
       type: 'TOGGLE_TODO_SUCCESS',
