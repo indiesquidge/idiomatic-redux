@@ -194,7 +194,7 @@ the complexity of the codebase.
 
 ### React-Redux: React bindings for Redux
 
-**Provider**: Component
+**Provider**: component
 
 Uses React's `context` to expose the store passed to it as a prop so that
 container components can specify their `contextTypes` and use `this.context.store`
@@ -221,28 +221,35 @@ All container components are very similar. They need to:
 - specify the `contextTypes` to get the store from the context
 
 `connect` is a utility function that encapsulates and provides these
-requirements by mapping the store state and desired actions to props. It is a
-curried function call, and the second call argument is the presentation component
-that is desired to be connected to the Redux store. The result of the `connect`
-call is a new container component that will render the presentation component
-passed in. It will calculate the props to pass to the presentation component by
-merging the return object from `mapStateToProps`, `mapDispatchToProps`, and any
-props explicitly provided on the container component itself.
+requirements by mapping the store state and desired actions to props.
+
+It is a curried function call, meant to decorate the component that is desired
+to be connected to the Redux store. The result of the `connect` call is a new
+component that will render the component passed in.
+
+It will calculate the props to pass to the returned component by merging the
+return object from `mapStateToProps`, `mapDispatchToProps`, and any props
+explicitly provided on the passed container component itself.
 
 ```javascript
-const ContainerComponent = connect(
+const WrappedComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PresentationComponent)
+)(ComponentToWrap)
 ```
 
 It's a common pattern to inject just the `dispatch` function when creating
 container components, and not subscribe to the store. If `mapStateToProps`
 or `mapDispatchToProps` is 'falsy', `connect` will still give you `dispatch` as
-a prop.
+a prop on the returned component.
+
+```javascript
+const WrappedComponent = connect()(ComponentToWrap)
+// WrappedComponent still receives `dispatch` function
+```
 
 It's also a common pattern to use the container props when calculating the child
-props for the presentation component. This is why  both `mapStateToProps` and
+props for the returned component. This is why both `mapStateToProps` and
 `mapDispatchToProps` can take props as an optional second argument.
 
 ### React-Router: declarative routing for React apps
