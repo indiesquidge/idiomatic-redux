@@ -34,7 +34,7 @@ with actions
 ### Reducer Composition
 
 A common pattern used in Redux that has different *reducers* specify how
-different parts of the *state* tree are updated in response to *acitons*.
+different parts of the *state* tree are updated in response to *actions*.
 *Reducers* are normal JavaScript functions, so they can call other *reducers*
 to delegate and abstract away handling of updates of some parts of the *state*
 they manage. The updates are then combined into one larger state object.
