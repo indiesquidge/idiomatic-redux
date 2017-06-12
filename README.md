@@ -1,24 +1,41 @@
 # Learn Redux
 
-### Three Principles of Redux
+> If you're like me, you prefer to understand the tools that you're using
+
+> There are many worthy problems in software engineering, but there is one
+> particular problem that I want to help solve, and that problem is an emotion
+> that I feel: frustration. I feel a lot of frustration developing apps. I feel
+> frustrated not because of the complex challenges, but because of the small
+> mistakes that I make that accumulate over time and cause me to waste a lot of
+> time and energy.
+
+> I want to encourage you to actually spend time working on developer tools,
+> because before you can optimize your app, you need to optimize your workflow.
+
+## Three Principles of Redux
+
+**These principles aren't fixed rules or literal statements about the
+implementation of Redux. Rather, they form a statement of intent about how Redux
+ought to be used.**
 
 1. The whole state of your application, including the data and the UI state, is
 contained in a single immutable JavaScript object, known as the State Tree
 
-2. The State Tree is read only - you cannot modify or write to it. The only way to
-change the State Tree is to dispatch an *action*
+2. The State Tree is read only - you cannot modify or write to it. The only way
+to change the State Tree is to dispatch an *action*
 
-3. State mutations in your application need to be described as pure functions
-(known as *reducers*) that take the previous state and the *action* being
-dispatched and return the new state
+3. State mutations in your application need to be described as a pure function
+(known as the *reducer* or "root reducer") that takes the previous *state* and
+the *action* being dispatched and returns the next *state*
 
-### Terms:
+## Terms:
 
-*state*: Any - minimal representation of data in your app
+*state*: Any - minimal representation of data in your app; for anything beyond a
+simple counter application, this is likely going to be an object
 
 *action*: Object - minimal representation of the change to the app's data; at
-the very least, this object must contain a `type` property (preferred as string)
-to specify the change
+the very least, this object must contain a `type` property (preferably as a
+string, because strings are easily serializable) to specify the change
 
 *reducer*: (Pure) Function - pure function responsible for implementing the
 update logic of the application; it should declare how the next *state* is
@@ -29,44 +46,20 @@ current application *state* object, let's you dispatch actions, and when you
 create it, you need to specify the *reducer* that tells how state is updated
 with actions
 
-*view* - the UI layer of this pattern, usually React
+*view* - the UI layer of this pattern (usually React, but doesn't have to be)
 
-### Reducer Composition
-
-A common pattern used in Redux that has different *reducers* specify how
-different parts of the *state* tree are updated in response to *acitons*.
-*Reducers* are normal JavaScript functions, so they can call other *reducers*
-to delegate and abstract away handling of updates of some parts of the *state*
-they manage. The updates are then combined into one larger state object.
-
-This is a pervasive pattern in Redux development, and can be applied many times,
-and while there is still a single top-level *reducer* managing the state of the
-application, it is convenient to express it as many *reducers* calling each
-other, each contributing to a part of the *state* tree.
-
-This pattern is so common that Redux exports a `combineReducers` function who's
-signature will take a single object argument—which is a mapping between the
-*state* field names and the *reducers* managing them—and will return the top
-level *reducer* function.
-
-> It is a useful convention to always name your *reducers* after the *state*
-> keys they manage.
-
-Reducer Composition helps scale Redux development because different people on
-the team can work on different *reducers*, handling the same actions, without
-running into each other and causing merge conflicts.
-
-### Redux Store
+## Redux Store
 
 The *store* has three important methods:
 
 1. `getState()` - retrieves current *state* of the Redux *store*
 
-2. `dispatch(action: Object)` - let's you call actions to change the *state*
+2. `dispatch(action: Object): ` - let's you dispatch actions to change the
+application *state*
 
-3. `subscribe(callback: Function)` - let's you register a callback that the *store*
-will call anytime an *action* has been dispatched, allowing you to update your
-UI to reflect the current application state
+3. `subscribe(callback: Function)` - let's you register a callback that the
+*store* will call anytime an *action* has been dispatched, allowing you to update
+your UI to reflect the current application state
 
 Any *state* change is caused by a `store.dispatch()` call somewhere in a React
 component. When an *action* is dispatched, the *store* calls the *reducer* it
@@ -87,7 +80,36 @@ Most of the time, Redux's `applyMiddleware` function is passed in as the
 "enhancer". If you want to include some persisted state, you need to do this
 before the enhancer, but you can skip the persisted state if you don't have it.
 
-### Redux Middleware
+## Reducer Composition
+
+A common pattern used in Redux that has different *reducers* specify how
+different parts of the *state* tree are updated in response to *acitons*.
+*Reducers* are normal JavaScript functions, so they can call other *reducers*
+to delegate and abstract away handling of updates of some parts of the *state*
+they manage. The updates are then combined into one larger state object.
+
+This is a pervasive pattern in Redux development, and can be applied many times,
+and while there is still a single top-level *reducer* managing the state of the
+application, it is convenient to express it as many *reducers* calling each
+other, each contributing to a part of the *state* tree.
+
+This pattern is so common that Redux exports a `combineReducers` function who's
+signature will take a single object argument—which is a mapping between the
+*state* field names and the *reducers* managing them—and will return the top
+level *reducer* function.
+
+`combineReducers` expects that each slice reducer it's been given will
+"correctly" respond to an unknown action by returning its default state, and
+never actually return undefined.
+
+> It is a useful convention to always name your *reducers* after the *state*
+> keys they manage.
+
+Reducer Composition helps scale Redux development because different people on
+the team can work on different *reducers*, handling the same actions, without
+running into each other and causing merge conflicts.
+
+## Redux Middleware
 
 The purpose of Redux middlewares is to replace the single `dispatch()` function
 with a chain of composable dispatch functions which each can do something with
@@ -115,7 +137,7 @@ operation. This is useful when you want to let a component specify the intention
 to start an async operation without worrying which actions get dispatched and
 when.
 
-### Useful Conventions
+## Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
 - If a *reducer* receives an undefined *state*, it should return the current *state*.
@@ -132,67 +154,7 @@ when.
 - The *reducer* function should be the default export of a reducer file, but any
     *selector* functions should be named exports.
 
-### Recommended Patterns
-
-*Container Components* - React components concerned with connecting the Redux
-store to the presentation components and specify the data and behavior that it
-needs
-
-*Presentation Components* - React components only concerned with how things look
-or how they render
-
-*Action Creators* - takes arguments about the action and returns an action
-object with the type and necessary properties set. While actions objects could
-be dispatched inline, using abstracted functions to encapsulate the action types
-helps document what kinds of actions can be dispatched without worrying about
-the action's internal structure.
-
-*Selectors* - functions (usually prefixed with `get`) used to encapsulate the
-knowledge about the *state* shape so that the components don't have to rely on
-it; so named because they "select" something from the state and use it to
-prepare data to be displayed by the UI.
-
-Redux does not enforce that you encapsulate the knowledge about the state shape
-in particular *selectors*. However, it's a nice pattern because it lets you
-change the *state* that is stored by *reducers* without having to change your
-components or your tests (if you use *selectors* and *reducers* together in your
-tests).
-
-When handling promise errors, it is usually best practice to use `catch` in the
-promise chain. The downside of this approach is if one of your reducers or
-subscribe components throws while handling an action, you'll get into the
-`catch` block and display an internal error message to the user. To avoid this,
-it is recommended that you don't use `catch` in this scenario and just pass the
-second argument so it catches only the errors from the underlying API promise.
-
-### Recommended Component Architecture:
-
-Components do not need to know *how* a change will take place, all they know is
-that they need to dispatch an *action* with at least a *type* property. (This
-makes *actions* follow a declarative programming approach.)
-
-The UI is most predictable when it is described as a pure function of the
-application state. A goal of refactoring components is to make every component
-as flexible as it is reasonable.
-
-Separate components into categories that are based on how things look
-(presentation components), and how they *act* (container components) so that
-components can be as flexible as possible. This decouples your rendering from
-Redux, so if you later decided to move your project to another framework (e.g.
-Relay, MobX, etc.) you won't have to change all of your components, as you can
-keep the presentational components exactly the same.
-
-The downside of the approach is that it somewhat breaks the encapsulation
-principle: you have to thread a lot of props through the components to get them
-to the leaf presentation components, including the callbacks, even when the
-intermediate components don't really use them. However, this problem can be
-solved by introducing many intermediate container components.
-
-Separating the container and presentation components is often a good idea, but
-it should not be taken as a dogma. It should only be done when it truly reduces
-the complexity of the codebase.
-
-### React-Redux: React bindings for Redux
+## React-Redux: React bindings for Redux
 
 **Provider**: component
 
@@ -252,7 +214,67 @@ It's also a common pattern to use the container props when calculating the child
 props for the returned component. This is why both `mapStateToProps` and
 `mapDispatchToProps` can take props as an optional second argument.
 
-### React-Router: declarative routing for React apps
+## Recommended Patterns
+
+*Container Components* - React components concerned with connecting the Redux
+store to the presentation components and specify the data and behavior that it
+needs
+
+*Presentation Components* - React components only concerned with how things look
+or how they render
+
+*Action Creators* - takes arguments about the action and returns an action
+object with the type and necessary properties set. While actions objects could
+be dispatched inline, using abstracted functions to encapsulate the action types
+helps document what kinds of actions can be dispatched without worrying about
+the action's internal structure.
+
+*Selectors* - functions (usually prefixed with `get`) used to encapsulate the
+knowledge about the *state* shape so that the components don't have to rely on
+it; so named because they "select" something from the state and use it to
+prepare data to be displayed by the UI.
+
+Redux does not enforce that you encapsulate the knowledge about the state shape
+in particular *selectors*. However, it's a nice pattern because it lets you
+change the *state* that is stored by *reducers* without having to change your
+components or your tests (if you use *selectors* and *reducers* together in your
+tests).
+
+When handling promise errors, it is usually best practice to use `catch` in the
+promise chain. The downside of this approach is if one of your reducers or
+subscribe components throws while handling an action, you'll get into the
+`catch` block and display an internal error message to the user. To avoid this,
+it is recommended that you don't use `catch` in this scenario and just pass the
+second argument so it catches only the errors from the underlying API promise.
+
+## Recommended Component Architecture:
+
+Components do not need to know *how* a change will take place, all they know is
+that they need to dispatch an *action* with at least a *type* property. (This
+makes *actions* follow a declarative programming approach.)
+
+The UI is most predictable when it is described as a pure function of the
+application state. A goal of refactoring components is to make every component
+as flexible as it is reasonable.
+
+Separate components into categories that are based on how things look
+(presentation components), and how they *act* (container components) so that
+components can be as flexible as possible. This decouples your rendering from
+Redux, so if you later decided to move your project to another framework (e.g.
+Relay, MobX, etc.) you won't have to change all of your components, as you can
+keep the presentational components exactly the same.
+
+The downside of the approach is that it somewhat breaks the encapsulation
+principle: you have to thread a lot of props through the components to get them
+to the leaf presentation components, including the callbacks, even when the
+intermediate components don't really use them. However, this problem can be
+solved by introducing many intermediate container components.
+
+Separating the container and presentation components is often a good idea, but
+it should not be taken as a dogma. It should only be done when it truly reduces
+the complexity of the codebase.
+
+## React-Router: declarative routing for React apps
 
 **withRouter**: higher-order Component
 
