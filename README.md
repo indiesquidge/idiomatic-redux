@@ -118,7 +118,7 @@ when.
 ### Useful Conventions
 
 - If a *reducer* receives an unknown *action*, it should return the current *state*.
-- If a *reducer* receives an undefined *state*, it should return the current *state*.
+- If a *reducer* receives an undefined *state*, it should return the initial *state*.
 - Name your *reducers* after the *state* keys they manage.
 - All *reducers* should take in two arguments: the current state, and an action,
     even if the *reducer* does not make use of the *state* passed in.
